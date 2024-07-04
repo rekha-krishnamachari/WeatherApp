@@ -1,0 +1,45 @@
+
+<div class="weather-div">
+  <div class="header">
+    <h1>Simple Weather</h1>
+    <div class="city-tabs">
+      <mat-tab-group [(selectedIndex)]="selectedCityIndex" (selectedIndexChange)="selectCity(cities[$event])" style="background-color: white;">
+        <mat-tab *ngFor="let city of cities" [label]="city"></mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+  <div class="hourly-forecast">
+    <h2>Next hours</h2>
+    <div class="hourly">
+      <div class="hour" *ngFor="let hour of hourlyWeather">
+        <span>{{ hour.temp }}°</span>
+        <div><img [src]="hour.icon" alt="weather icon"></div>
+        <span>{{ hour.time | date :'shortTime'}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="daily-forecast">
+    <h2>Next 5 days</h2>
+    <div class="day" *ngFor="let day of weatherData">
+      <div class="day-summary">
+        <div><img [src]="day.icon" alt="weather icon" ></div>
+        <span class="day-name"><p style="font-size: larger;"><b>{{ day.date | date:'EEE, MMM d' }}</b></p>
+         <span style="padding-left: 5%; padding-top: 5%;"> {{ day.description }}</span></span>
+        <span class="temps">{{ day.highestTemp }}°</span> <span class="temps">    {{ day.lowestTemp }}° </span>
+      </div>
+      
+    </div>
+  </div>
+  <!-- <div class="row">
+    <div class="col">1</div>
+    <div class="col">2</div>
+    <div class="col">3</div>
+    <div class="col">4</div>
+</div>
+<div class="row">
+    <div class="col">5</div>
+    <div class="col">6</div>
+    <div class="col">7</div>
+    <div class="last">8</div>
+</div> -->
+</div>

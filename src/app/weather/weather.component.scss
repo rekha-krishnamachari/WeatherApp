@@ -1,0 +1,115 @@
+// .col
+// {
+//     float: left;
+//     width: 25%;
+// }
+// .row{
+//     border: 1px solid green;
+//     overflow: hidden;  /* "overflow: auto;" works just as well instead */
+//     width:100%;        /* Helps older versions of IE */
+// }
+
+.weather-div {
+  font-family: Arial, sans-serif;
+  max-width: 500px;
+  margin: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  
+  .header {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px;
+
+    h1 {
+      margin: 0;
+    }
+
+    .city-tabs {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+
+      span {
+        padding: 0 10px;
+        cursor: pointer;
+
+        &.active {
+          border-bottom: 2px solid white;
+        }
+      }
+    }
+  }
+
+
+
+  .hourly-forecast, .daily-forecast {
+    padding: 15px;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .hourly {
+      display: flex;
+      justify-content: space-between;
+
+      .hour {
+        text-align: center;
+        font-size: 14px;
+
+        .sun-icon {
+          width: 20px;
+          height: 20px;
+          background: yellow;
+          border-radius: 50%;
+          margin: 5px auto;
+        }
+      }
+    }
+
+    .day {
+      margin-bottom: 10px;
+
+      .day-summary {
+        display: flex;
+        align-items: center;
+
+        .sun-icon {
+          width: 20px;
+          height: 20px;
+          background: yellow;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+
+        .day-name {
+          padding-left: 20%;
+          flex-grow: 1;
+         
+        }
+
+        .temps {
+          font-weight: bold;
+          padding-left: 5%;
+          padding-right: 5%;
+        }
+      }
+
+      p {
+        margin: 5px 0 0 2px;
+        font-size: 14px;
+        padding-right: 10px;
+      }
+    }
+  }
+    
+}
+
+
+.mat-tab-label {
+  color: white;
+}
+
