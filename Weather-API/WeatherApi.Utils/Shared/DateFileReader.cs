@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace WeatherApi.Utils
+namespace WeatherApi.Utils.Shared
 {
     public static class DateFileReader
     {

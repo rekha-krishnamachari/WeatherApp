@@ -1,7 +1,7 @@
 ﻿using System;
-namespace WeatherApi.Models
+namespace WeatherApi.Models.Dto.Weather
 {
-    public sealed class WeatherResult
+    public class WeatherResponse
     {
         public string Date { get; init; } = string.Empty; // ISO yyyy-MM-dd
         public double? MinTemperature { get; init; }

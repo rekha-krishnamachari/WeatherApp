@@ -1,6 +1,6 @@
 ﻿namespace WeatherApi.Test
 {
-    public class Class1
+    public class WeatherTest
     {
 
     }

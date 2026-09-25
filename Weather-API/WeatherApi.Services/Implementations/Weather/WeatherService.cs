@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using WeatherApi.Models;
+﻿using System.Text.Json;
+using WeatherApi.Contracts.Interfaces.Weather;
+using WeatherApi.Models.Dto.Weather;
 
-namespace WeatherApi.Services
+namespace WeatherApi.Services.Implementations.Weather
 {
     public sealed  class WeatherService :IWeatherService
     {
@@ -17,17 +13,17 @@ namespace WeatherApi.Services
             _httpClient = httpClient;
         }
 
-        public async Task<WeatherResult> GetWeatherForDateAsync(DateTime date, double latitude, double longitude, CancellationToken cancellationToken = default)
+        public async Task<WeatherResponse> GetWeatherForDateAsync(WeatherRequest weatherRequest, CancellationToken cancellationToken = default)
         {
-           var iso=date.ToString("yyyy-MM-dd");
-           var url = $"https://archive-api.open-meteo.com/v1/archive?latitude={latitude}&longitude={longitude}&start_date={iso}&end_date={iso}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=UTC";
+           var iso= weatherRequest?.Date.ToString("yyyy-MM-dd");
+           var url = $"https://archive-api.open-meteo.com/v1/archive?latitude={weatherRequest?.Latitude}&longitude={weatherRequest?.Longitude}&start_date={iso}&end_date={iso}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=UTC";
 
             try
             {
                 using var response = await _httpClient.GetAsync(url, cancellationToken);
                 if(!response.IsSuccessStatusCode)
                 {
-                    return new WeatherResult
+                    return new WeatherResponse
                     {
                         Date = iso,
                         Status = "Error",
@@ -41,7 +37,7 @@ namespace WeatherApi.Services
                 if(!doc.RootElement.TryGetProperty("daily",out var daily))
                 {
 
-                    return new WeatherResult
+                    return new WeatherResponse
                     {
                         Date=iso,
                         Status = "Error",
@@ -69,7 +65,7 @@ namespace WeatherApi.Services
                     if (pArr[0].ValueKind == JsonValueKind.Number && pArr[0].TryGetDouble(out var d)) precipitation = d;
                 }
 
-                return new WeatherResult
+                return new WeatherResponse
                 {
                     Date = iso,
                     MinTemperature = min,
@@ -80,7 +76,7 @@ namespace WeatherApi.Services
             }
             catch(Exception ex)
             {
-                return new WeatherResult
+                return new WeatherResponse
                 {
                     Date = iso,
                     Status = "Error",

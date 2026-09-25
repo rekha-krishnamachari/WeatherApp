@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WeatherApi.Contracts\WeatherApi.Contracts.csproj" />
     <ProjectReference Include="..\WeatherApi.Models\WeatherApi.Models.csproj" />
   </ItemGroup>
 
