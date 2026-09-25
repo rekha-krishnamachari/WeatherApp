@@ -1,0 +1,34 @@
+<div class="weather-grid-wrapper">
+  <div class="toolbar">
+    <label for="sortField">Sort by</label>
+    <select id="sortField" [(ngModel)]="sortField" (ngModelChange)="onSortFieldChange($event)">
+      <option value="date">Date</option>
+      <option value="minTemperature">Min Temperature</option>
+      <option value="maxTemperatureF">Max Temperature</option>
+      <option value="precipitation">Precipitation</option>
+    </select>
+
+    <button type="button" (click)="toggleSortDirection()">
+      {{ sortDirection === 'asc' ? 'Ascending' : 'Descending' }}
+    </button>
+  </div>
+
+  <div class="weather-grid" role="table">
+    <div class="grid-header" role="row">
+      <div role="columnheader">Date</div>
+      <div role="columnheader">Min Temp</div>
+      <div role="columnheader">Max Temp</div>
+      <div role="columnheader">Precipitation</div>
+    </div>
+
+    @for (weather of weatherResult; track weather.date) {
+      <div class="grid-row" role="row">
+        <div role="cell">{{ weather.date }}</div>
+        <div role="cell">{{ weather.minTemperature }}°</div>
+        <div role="cell">{{ weather.maxTemperatureF }}°</div>
+        <div role="cell">{{ weather.precipitation }} mm</div>
+      </div>
+    }
+  </div>
+</div>
+
