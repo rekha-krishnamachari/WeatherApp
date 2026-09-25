@@ -20,49 +20,54 @@ namespace WeatherApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Get([FromQuery] WeatherRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<WeatherResponse>>> Get([FromQuery] WeatherRequest? request = null, CancellationToken cancellationToken = default)
         {
-
             double? latitude = request?.Latitude;
             double? longitude = request?.Longitude;
 
             var filePath = Path.Combine(_env.ContentRootPath, "dates.txt");
             if (!System.IO.File.Exists(filePath))
-                return NotFound(new { Message = $"dates file not found at path: {filePath}" });
-
-            var results = new List<WeatherResponse>();
-            var fileErrors = new List<string>();
-
+            {
+                return Ok(Array.Empty<WeatherResponse>());
+            }
+            var responses = new List<WeatherResponse>();
             var (parsedIsoDates, errors) = DateFileReader.ReadAndParseDates(filePath);
-            if (errors is { Count: > 0 })
-                fileErrors.AddRange(errors);
+
 
             foreach (var iso in parsedIsoDates)
             {
-                if (!DateTime.TryParseExact(iso, "yyyy-MM-dd", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var dt))
+                if (!DateTime.TryParseExact(iso, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
                 {
-                    fileErrors.Add($"Could not parse ISO date '{iso}'.");
+                    responses.Add(new WeatherResponse
+                    {
+                        Date = iso,
+                        Status = "Invalid",
+                        ErrorMessage = "Could not parse normalized ISO date."
+                    });
                     continue;
                 }
 
-                var req = new WeatherRequest
+                var perDateRequest = new WeatherRequest
                 {
                     Date = dt,
                     Latitude = latitude,
                     Longitude = longitude
                 };
 
-                var entry = await _weatherService.GetWeatherForDateAsync(req, cancellationToken).ConfigureAwait(false);
-                results.Add(entry);
+                var result = await _weatherService.GetWeatherForDateAsync(perDateRequest, cancellationToken).ConfigureAwait(false);
+
+                responses.Add(new WeatherResponse
+                {
+                    Date = result.Date,
+                    MinTemperature = result.MinTemperature,
+                    MaxTemperature = result.MaxTemperature,
+                    Precipitation = result.Precipitation,
+                    Status = result.Status,
+                    ErrorMessage = result.ErrorMessage
+                });
             }
 
-            return Ok(new
-            {
-                Latitude = latitude,
-                Longitude = longitude,
-                Results = results,
-                FileErrors = fileErrors
-            });
+            return Ok(responses);
         }
     }
 }

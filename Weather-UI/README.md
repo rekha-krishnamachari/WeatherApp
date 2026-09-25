@@ -1,27 +1,75 @@
-# WeatherUI
+﻿# Weather App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
+This repository contains two parts:
 
-## Development server
+- Angular UI: `Weather-UI`
+- .NET backend API: `Weather-API`
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+The UI calls the backend at `http://localhost:5021/api/weather`.
 
-## Code scaffolding
+## Prerequisites
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Before running the app, make sure you have:
 
-## Build
+- Node.js 18+ and npm
+- Angular CLI 18
+- .NET 8 SDK
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## How to run the backend
 
-## Running unit tests
+From the parent folder (`c:\Projects\WeatherApp`):
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+dotnet restore .\Weather-API\WeatherApi.sln
+cd .\Weather-API\WeatherApi
+dotnet run
+```
 
-## Running end-to-end tests
+The API should start on:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- `http://localhost:5021`
+- Swagger UI: `http://localhost:5021/swagger`
 
-## Further help
+The backend is configured to accept requests from the Angular UI on `http://localhost:4200`.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## How to run the UI
+
+Open a new terminal and go to the UI project folder:
+
+```bash
+cd c:\Projects\WeatherApp\Weather-UI
+npm install
+npm start
+```
+
+Or, if you prefer the Angular CLI directly:
+
+```bash
+cd c:\Projects\WeatherApp\Weather-UI
+ng serve
+```
+
+Then open:
+
+- `http://localhost:4200`
+
+## Assumptions
+
+- The backend must be running before the UI loads weather data.
+- The UI is expected to call the API at `http://localhost:5021/api/weather`.
+- The Angular app runs on port `4200`.
+- The backend is configured with CORS to allow requests from `http://localhost:4200`.
+- The API is running in development mode and is not secured with authentication.
+
+## Troubleshooting
+
+If the UI shows an error or no data:
+
+1. Verify the backend is running.
+2. Check `http://localhost:5021/swagger` to confirm the API is available.
+3. Confirm the browser console does not show a CORS issue.
+4. Ensure you are using the correct project folder for each app.
+
+## Notes
+
+The backend and UI are separate projects, so they need to be started independently in different terminals.

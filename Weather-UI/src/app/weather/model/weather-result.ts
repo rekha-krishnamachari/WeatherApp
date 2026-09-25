@@ -1,7 +1,7 @@
 export interface WeatherResult {
     date: string;
     minTemperature: number;
-    maxTemperatureF: number;
+    maxTemperature: number;
     precipitation: number;
     errorMessage?: string;
     status?: string;
